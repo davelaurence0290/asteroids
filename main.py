@@ -22,8 +22,14 @@ if __name__ == '__main__':
     # Get list of asteroids.
     astList = asteroid_scanner.importAsts(inputFile)
 
+    bestAsteroid = tuple()
     if len(astList) == 0:
         print('No asteroids supplied')
+    elif len(astList) < 3:
+        # Trivial Solution
+        bestAsteroid = astList[0]
     else:
         # Scan for best 'viewing' asteroid
         bestAst = asteroid_scanner.scan(astList)
+
+    print('{0} {1}'.format(*bestAst))
