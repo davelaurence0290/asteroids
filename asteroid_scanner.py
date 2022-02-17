@@ -19,7 +19,7 @@ class AsteroidScanner:
         return (ast1[1]-ast2[1])**2 + (ast1[0]-ast2[0])**2
 
     # function to calculate Cross-Product (cp)
-    # used to check orientation during algorightm progression, and to sort initial asteroid points by angle.
+    # used to check orientation during algorithm progression, and to sort initial asteroid points by angle.
     @staticmethod
     def cp(ast1, ast2, ast3):
         return (ast1[0] - ast3[0]) * (ast2[1] - ast3[1]) - \
@@ -29,18 +29,18 @@ class AsteroidScanner:
     # will be used with qsort() (must have signature: int cmp(const void *a, const void *b))
     @classmethod
     def angleSort(cls, ast1, ast2):
-        #using cross product to tell difference in angle
+        # using cross product to tell difference in angle
         # 'clockwise' (positive) cp means ast2 has larger angle with x-axis
         # 'counter-clockwise' (negative) cp means ast2 has smaller angle
         #  cp = 0 means they are colinear. take shorter distance as 'lower' asteroid in ranking.
 
-        orientation = AsteroidScanner.cp(ast1, ast2, cls.ast0)
+        orientation = AsteroidScanner.cp(ast1, ast2, cls.__ast0)
 
-        if (orientation == 0):
-            return AsteroidScanner.squareD(ast1, cls.ast0) - AsteroidScanner.squareD(ast2, cls.ast0); # will return 0 if asts 1 and 2 are the same
+        if orientation == 0:
+            # will return 0 if asts 1 and 2 are the same
+            return AsteroidScanner.squareD(ast1, cls.__ast0) - AsteroidScanner.squareD(ast2, cls.__ast0)
 
         return -orientation
-
 
     # return the cosine of angle ast1 -> ast2 -> ast3
     @staticmethod
@@ -56,13 +56,13 @@ class AsteroidScanner:
     @staticmethod
     def importAsts(inputFile):
 
-        with open(inputFile,'r') as inputHandle:
+        with open(inputFile, 'r') as inputHandle:
             inputLines = inputHandle.readlines()
 
         # Read number of asteroids
         numAsts = int(inputLines.pop(0))
 
-        astList = [(int(pair[0]),int(pair[1])) for pair in [line.split() for line in inputLines]]
+        astList = [(int(pair[0]), int(pair[1])) for pair in [line.split() for line in inputLines]]
 
         # TODO: Check if input is as expected:
         # Non-zero asts?
