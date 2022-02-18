@@ -56,7 +56,7 @@ class AsteroidScanner:
     @staticmethod
     def import_asteroids(inputFile):
 
-        astList = list()
+        astList = []
         numAsts = 0
         try:
             with open(inputFile, 'r') as inputHandle:
@@ -64,7 +64,7 @@ class AsteroidScanner:
 
                 # For all lines in inputHandle, append a coordinate tuple
                 astList = [(int(coordPair[0]),int(coordPair[1])) for coordPair in [line.split() for line in inputHandle]]
-                
+
         except Exception as err:
             print(err)
 
@@ -84,8 +84,7 @@ class AsteroidScanner:
     def initial_xy_sort(ast1, ast2):
         if ast1[1] == ast2[1]:
             return ast1[0] - ast2[0]
-        else:
-            return ast1[1] - ast2[1]
+        return ast1[1] - ast2[1]
 
     @staticmethod
     def graham_scan(astList):
@@ -97,7 +96,7 @@ class AsteroidScanner:
         astList = sorted(astList,key=cmp_to_key(AsteroidScanner.angle_sort))
 
         # Construct convex hull
-        convHull = list()
+        convHull = []
         # Add first two points (after sorting, __asteroid0 and first sorted point are guaranteed to be in the hull)
         convHull.append(AsteroidScanner.__asteroid0)
         convHull.append(astList.pop(0))

@@ -1,6 +1,6 @@
 import unittest
-import asteroid_scanner
 import math
+import asteroid_scanner
 
 class TestAsteroids(unittest.TestCase):
 
@@ -36,32 +36,33 @@ class TestAsteroids(unittest.TestCase):
 
     def test_import_asteroids_input1(self):
         expected = [(0,0),(1,0),(1,1),(0,1),(3,3)]
-        actual = asteroid_scanner.AsteroidScanner.import_asteroids('input\input1.txt')
+        actual = asteroid_scanner.AsteroidScanner.import_asteroids('input\\input1.txt')
         self.assertEqual(expected, actual, {'List should contain ': expected})
 
     # The ValueError Exceptions that trigger in this test is commented out for 'release'
     def test_import_asteroids_input98(self):
         with self.assertRaises(ValueError,msg='Should fail: supplied more asteroids than expected'):
-            asteroid_scanner.AsteroidScanner.import_asteroids('input\input98.txt')
+            asteroid_scanner.AsteroidScanner.import_asteroids('input\\input98.txt')
 
     # The ValueError Exceptions that trigger in this test is commented out for 'release'
     def test_import_asteroids_input99(self):
         with self.assertRaises(ValueError,msg='Should fail: supplied fewer asteroids than expected'):
-            asteroid_scanner.AsteroidScanner.import_asteroids('input\input99.txt')
+            asteroid_scanner.AsteroidScanner.import_asteroids('input\\input99.txt')
 
     def test_scan_input1(self):
-        astList = asteroid_scanner.AsteroidScanner.import_asteroids('input\input1.txt')
+        astList = asteroid_scanner.AsteroidScanner.import_asteroids('input\\input1.txt')
 
         expected = (3,3)
         actual = asteroid_scanner.AsteroidScanner.scan(astList)
         self.assertEqual(expected,actual,'Best asteroid should be {0}'.format(expected))
 
     def test_scan_input2(self):
-        astList = asteroid_scanner.AsteroidScanner.import_asteroids('input\input2.txt')
+        astList = asteroid_scanner.AsteroidScanner.import_asteroids('input\\input2.txt')
 
         expected = (0,25)
         actual = asteroid_scanner.AsteroidScanner.scan(astList)
         self.assertEqual(expected,actual,'Best asteroid should be {0}'.format(expected))
+
 
 if __name__ == '__main__':
     unittest.main()
