@@ -1,35 +1,30 @@
-# Dave Smith
-# Key Technology, Programming Exercise
+"""Main Module
+Dave Smith
+Key Technology, Programming Exercise"""
 
 # Problem Statement: given a 2D field of asteroids, find the asteroid with the smallest viewing
 # angle that contains the rest of the asteroid field. Input will be a text file containing:
 #
 # the number of asteroids on the first line (integer)
 # on each new line thereafter, the listed location of  each asteroid by 2D coordinates
+
 import sys
 import asteroid_scanner
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-
-    # try:
-    #     inputFile = sys.argv[1]
-    # except(OSError, IOError):
-    #     print('Must supply asteroid input file')
-    #     quit()
-    INPUT_FILE = 'input\\input2.txt'
+def main():
+    try:
+        INPUT_FILE = sys.argv[1]
+    except(OSError, IOError):
+        print('Must supply asteroid input file')
+        sys.exit()
     # Get list of asteroids.
-    astList = asteroid_scanner.importAsts(INPUT_FILE)
+    ast_list = asteroid_scanner.AsteroidScanner.import_asteroids(INPUT_FILE)
 
-    bestAsteroid = tuple()
-    if len(astList) == 0:
-        print('No asteroids supplied')
-    elif len(astList) < 3:
-        # Trivial Solution
-        bestAsteroid = astList[0]
-    else:
-        # Scan for best 'viewing' asteroid
-        bestAst = asteroid_scanner.scan(astList)
+    # Scan for best 'viewing' asteroid
+    best_asteroid = asteroid_scanner.AsteroidScanner.scan(ast_list)
 
-    print('{0} {1}'.format(*bestAst))
+    if best_asteroid is not None:
+        print(f'{best_asteroid[0]} {best_asteroid[1]}')
+
+if __name__ == '__main__':
+    main()
