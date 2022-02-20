@@ -65,13 +65,26 @@ class TestAsteroids(unittest.TestCase):
         """Test cosine() with known 45deg vectors."""
         expected = math.cos(math.pi / 4)
         actual = asteroid_scanner.AsteroidScanner.cosine((1, 1), (0, 0), (1, 0))
-        self.assertEqual(expected, actual, f'Squared distance should be {expected}')
+        self.assertAlmostEqual(expected, actual, 7, f'Squared distance should be {expected}')
 
     def test_import_asteroids_input1(self):
         """Test import_asteroids(). Ensure a list of asteroids is retrieved correctly"""
         expected = [(0, 0), (1, 0), (1, 1), (0, 1), (3, 3)]
         actual = asteroid_scanner.AsteroidScanner.import_asteroids('input\\input1.txt')
         self.assertEqual(expected, actual, {'List should contain ': expected})
+
+    def test_import_asteroids_input7(self):
+        """Test import_asteroids(). Ensure a list of asteroids is retrieved correctly"""
+        expected = []
+        actual = asteroid_scanner.AsteroidScanner.import_asteroids('input\\input7.txt')
+        self.assertEqual(expected, actual, {'List should contain ': expected})
+
+    # The ValueError Exception that triggers in this test is commented out for 'release'
+    def test_import_asteroids_input97(self):
+        """Test import_asteroids(). Ensure a list of asteroids is retrieved correctly"""
+        with self.assertRaises(ValueError,
+                               msg='Should fail: supplied more asteroids than expected'):
+            asteroid_scanner.AsteroidScanner.import_asteroids('input\\input97.txt')
 
     # The ValueError Exception that triggers in this test is commented out for 'release'
     def test_import_asteroids_input98(self):

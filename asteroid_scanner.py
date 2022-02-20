@@ -2,7 +2,7 @@
 
 import math
 from functools import cmp_to_key
-
+from re import finditer
 
 class AsteroidScanner:
     """AsteroidScanner utility class.
@@ -21,12 +21,12 @@ class AsteroidScanner:
     @staticmethod
     def squared_distance(ast1, ast2):
         """Return the square of the distance between two asteroids"""
-        # (square of distance will be sufficient for comparisons)
+        # Square of distance will be sufficient for distance comparisons
         return (ast1[1]-ast2[1])**2 + (ast1[0]-ast2[0])**2
 
     @staticmethod
     def cross_product(ast1, ast2, ast3):
-        """Calculate the cross product of vector rays: (ast1-ast3) X (ast2-ast3)"""
+        """Calculate and return the cross product of vector rays: (ast1-ast3) X (ast2-ast3)"""
         # Used to check orientation during algorithm progression, and to sort initial asteroid
         # points by angle.
         return (ast1[0] - ast3[0]) * (ast2[1] - ast3[1]) - \
@@ -35,7 +35,7 @@ class AsteroidScanner:
     # function for initial sort of asteroids according to their angle with asteroid0
     @classmethod
     def angle_sort(cls, ast1, ast2):
-        """Calculate the orientation of two points w.r.t. the angle they form with
+        """Calculate and return the orientation of two points w.r.t. the angle they form with
         ___asteroid and the x-axis"""
         # using cross product to tell difference in angle
         # 'clockwise' (positive) cross_product means ast2 has larger angle with x-axis
@@ -53,7 +53,7 @@ class AsteroidScanner:
     # return the cosine of angle ast1 -> ast2 -> ast3
     @staticmethod
     def cosine(ast1, ast2, ast3):
-        """# Calculate and return the cosine of angle ast1 -> ast2 -> ast3"""
+        """Calculate and return the cosine of angle ast1 -> ast2 -> ast3"""
         # dot product of rays 1-2, 3-2
         dot_product = (ast1[0] - ast2[0])*(ast3[0] - ast2[0]) + \
                       (ast1[1] - ast2[1])*(ast3[1] - ast2[1])
@@ -79,23 +79,27 @@ class AsteroidScanner:
         except FileNotFoundError as err:
             print(err)
         except ValueError as val_err:
-            print("Invalid integer for asteroid count")
+            print("Invalid input for asteroid count or asteroid coordinates. Check input file.")
             print(val_err)
+            # Regex search to identify invalid input for user
+            with open(input_file, 'r') as input_handle:
+                for line_num, line in enumerate(input_handle.readlines()):
+                    for match in finditer(r'[A-Za-z]+', line):
+                        print(f'Found at line {line_num+1}: {match.span()}; '
+                              f'Chars found: \'{match.group()}\'')
+
         # Check that number of asteroids declared is equal to actual number of tuples supplied.
-        try:
-            assert num_asts == len(ast_list)
-        except AssertionError:
-            if num_asts < len(ast_list):
-                print('Asteroid number mismatch. More asteroids than expected')
-                # raise ValueError
-            else:
-                print('Asteroid number mismatch. Fewer asteroids supplied than expected.')
-                # raise ValueError
+        if num_asts < len(ast_list):
+            print('Asteroid number mismatch. More asteroids than expected')
+            # raise ValueError
+        elif num_asts > len(ast_list):
+            print('Asteroid number mismatch. Fewer asteroids supplied than expected.')
+            # raise ValueError
 
         return ast_list
 
     @staticmethod
-    def initial_xy_sort(ast1, ast2):
+    def initial_yx_sort(ast1, ast2):
         """Compare two asteroids by position. Return comparison of y coordinates, or x if same y."""
         if ast1[1] == ast2[1]:
             return ast1[0] - ast2[0]
@@ -105,7 +109,7 @@ class AsteroidScanner:
     def graham_scan(ast_list):
         """Apply Graham's Scan algorithm to set of asteroids. Return convex hull list."""
         # Sort asteroids by lowest 'y' coordinate first, then lowest 'x'
-        ast_list = sorted(ast_list, key=cmp_to_key(AsteroidScanner.initial_xy_sort))
+        ast_list = sorted(ast_list, key=cmp_to_key(AsteroidScanner.initial_yx_sort))
         # Remove and save __asteroid0 (first entry)
         AsteroidScanner.set_asteroid0(ast_list.pop(0))
         # Sort asteroids by polar angle with __asteroid0 and x-axis
@@ -129,10 +133,10 @@ class AsteroidScanner:
 
     @staticmethod
     def get_best_asteroid(conv_hull):
-        """Given a convex hull of asteroids, return """
+        """Given a convex hull of asteroids, return best asteroid by internal 'viewing' angle"""
         # Iterate through convex hull, find minimum viewing angle
-        # Since angle will be < 180deg, using cosine to rank will suffice.
-        # Maximum Cosine -> Smallest angle
+        # Since angle will be <= 180deg, using cosine to rank will suffice.
+        # Maximum Cosine <==> Smallest angle
         big_cosine = -1
         best_ast_num = 0
         for ast_num in range(len(conv_hull)-1):

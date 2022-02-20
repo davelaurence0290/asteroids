@@ -1,9 +1,11 @@
 # Asteroids
-David Smith
-Key Technology, Programming Exercise.
-19/02/2022
+<br />
+David Smith<br />
+Key Technology, Programming Exercise.<br />
+20/02/2022
 
 ##Problem Statement
+<br />
 You are part of a mission to explore a group of asteroids. These asteroids are well-behaved in that they all move in the same plane and are static to one another. A spacecraft, equipped with measuring devices, will land on one of the asteroids to perform all sorts of experiments. It is your task to choose the ideal asteroid to land on such that from that vantage point the system can monitor the whole asteroid constellation within the smallest viewing angle.
 
 Input:
@@ -34,7 +36,7 @@ In case your solution is in C++, it should be compilable with the command: g++ -
 ---
 
 ##Solution
-
+<br />
 The problem statement strikes me as a very relevant case for Key Technology and its applications for detection and object sorting:
 1. Examining a field of objects in a single plane, similar to our line of sorters which utilize belts on which all product is stabilized and is static to one another.
 2. Inspection of a single object in the field of view: identified by many data points on its surface, and on which we might be interested in looking at the outer bounds.
@@ -64,13 +66,14 @@ For implementation of the Graham Scan in python much of the impementation was mo
 ---
 
 ##Notes on Implementation
+<br />
 Development in Python 3.6.6<br />
 Pycharm Community Edition IDE
 
 - For sorting the points in step 2 above, each pair of points (p1, p2) considered were sorted according to their cross product (p1-p0) X (p2-p0) when connecting p0 to the two points individually, forming two rays beginning at p0. If the cross product was positive, then p2-p0 was of greater angle then p1-p0, and therefore p2 should come after p1. If negative, p1 should come after p2. If the cross product was 0, then the points are collinear with p0, and the closer point to p0 should be first.
 - For distance comparisons, the square of the distance was used, instead of the true distance. This was sufficient for comparing the distance of two pairs of points.
 - For angle comparisons in step 4 above, the value of the cosine of the angle was used, instead of the angle value. This was sufficient as the highest cosine would yield the smallest angle. Since cosine is monotonic on the interval [0,pi] and all internal angles are guaranteed to be < pi (def convex hull), then finding the highest cosine value would yield the desired asteroid point.
-- For this solution, I elected to not error check input, and assumed its form, contents would remain consistent. (i.e. if the file exists, is found, and open for read, program proceeds assuming it contains points of the format in the problem statement)
+- For this solution, I elected to not exhaustively check input file data for errors. Generally, if the file is found, and open for read, program proceeds assuming it contains points of the format in the problem statement). It does ensure that integers are supplied, and if strings are encountered, asteroid importing aborts with a message identifying the string the location in the file (line num: col nums).
 - Since the only user input was the initial input.txt file, inputs from one function to another were generally assumed to be valid. Little argument validation was performed. For example, functions expecting integer args did not verify that the args weren't strings, etc.
 - Most methods are organized as utility (static) methods of a class. This helped me quickly generate unit test methods, and also store the __asteroid0 (lowest-y reference asteroid) as a class variable and avoid a global variable, or passing around a constant between function calls.
 - Even if the number of asteroids supplied is different from what is declared at input line 1, then the program still runs and solves the asteroid set. Declaring fewer asteroids than are supplied will result in program only considering and solving with as many asteroids as were declared. Declaring more points than are supplied will not affect the solution.
@@ -80,7 +83,8 @@ Pycharm Community Edition IDE
 	2. Fewer than 3 points (after removing duplicates), then the trivial solution will be given: the first point in the set list (may be different than first supplied asteroid after removing duplicates). As there are at most two points, either point would work.
 
 ##Other Remarks
+<br />
 - Improvements to unit testing might include randomizing the integer inputs for asteroid coordinates where possible.
-- With more experience, it would be interesting to see how to better organize unit testing. "Do I really need a new function for each test case, or could I cleverly reuse the functions for multiple cases?"
+- With more experience, it would be interesting to see how to better organize unit testing. "Do I really need a new function for each test case, or could I cleverly reuse the functions for multiple cases?" Currently have "too many public methods" for my test Class.
 - I used a class with mostly static utility functions with a class member variable to house the functionality. If all my functions are static, should I just have added all these functions into the main.py file instead of having a class?
 	1. From the beginning, I think I only used a class so I could have a class variable and avoid the use of a global.

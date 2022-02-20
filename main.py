@@ -11,20 +11,23 @@ Key Technology, Programming Exercise"""
 import sys
 import asteroid_scanner
 
+
 def main():
+    """Main"""
     try:
-        INPUT_FILE = sys.argv[1]
+        input_file = sys.argv[1]
     except(OSError, IOError):
         print('Must supply asteroid input file')
         sys.exit()
     # Get list of asteroids.
-    ast_list = asteroid_scanner.AsteroidScanner.import_asteroids(INPUT_FILE)
+    ast_list = asteroid_scanner.AsteroidScanner.import_asteroids(input_file)
 
     # Scan for best 'viewing' asteroid
     best_asteroid = asteroid_scanner.AsteroidScanner.scan(ast_list)
 
     if best_asteroid is not None:
         print(f'{best_asteroid[0]} {best_asteroid[1]}')
+
 
 if __name__ == '__main__':
     main()
